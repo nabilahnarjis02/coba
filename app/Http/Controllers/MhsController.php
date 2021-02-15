@@ -67,9 +67,10 @@ class MhsController extends Controller
     public function destroy($id)
     {
         $mahasiswa = mahasiswa :: where ('id',$id)->first();
-        if($mahasiswa){
-            return $mahasiswa -> delete();
+     
+         $mahasiswa -> delete(); return redirect()->route('mahasiswas.index');
+
                 with('success','Mahasiswa deleted successfully');
-        }
+        
     }
 }

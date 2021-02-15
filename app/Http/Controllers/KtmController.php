@@ -3,73 +3,69 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
-use App\Models\Mahasiswa;
+use App\Models\kontrakmk;
  
-class MhsController extends Controller
+class KtmController extends Controller
 {
     public function index()
     {
-        $mahasiswas = Mahasiswa::latest()->paginate(5);
+        $kontrakmks = kontrakmk::latest()->paginate(5);
  
-        return view('mahasiswas.index',compact('mahasiswas'))
+        return view('kontrakmks.index',compact('kontrakmks'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
  
     public function create()
     {
-        return view('mahasiswas.create');
+        return view('kontrakmks.create');
     }
  
     public function store(Request $request)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
-
+            'mahasiswa_id' => 'required',
+            'semester_id' => 'required|numeric',
         ]);
  
-        Mahasiswa::create($request->all());
+        kontrakmk::create($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa created successfully.');
+        return redirect()->route('kontrakmks.index')
+                        ->with('success','kontrak Mata Kuliah created successfully.');
     }
  
     public function show(int $id)
     {
         
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.show',['mahasiswa' => $mahasiswa]);
+        $kontrakmk = Kontrakmk::findOrFail($id); 
+        return view('kontrakmks.show',['kontrakmk' => $kontrakmk]);
     }
  
     public function edit(int $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.edit',['mahasiswa' => $mahasiswa]);
+        $kontrakmk = Kontrakmk::findOrFail($id); 
+        return view('kontrakmks.edit',['kontrakmk' => $kontrakmk]);
     }
  
-    public function update(Request $request, Mahasiswa $post)
+    public function update(Request $request, Kontrakmk $post)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
+            'mahasiswa_id' => 'required',
+            'semester_id' => 'required|numeric',
         ]);
  
         $post->update($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa updated successfully');
+        return redirect()->route('kontrakmks.index')
+                        ->with('success','Kontrak Mata Kuliah updated successfully');
     }
  
     public function destroy($id)
     {
-        $mahasiswa = mahasiswa :: where ('id',$id)->first();
-        if($mahasiswa){
-            return $mahasiswa -> delete();
-                with('success','Mahasiswa deleted successfully');
-        }
+        $kontrakmk = $kontrakmk :: where ('id',$id)->first();
+     
+         $kontrakmk -> delete(); return redirect()->route('kontrakmks.index');
+
+                with('success','Kontrak Mata Kuliah deleted successfully');
+        
     }
 }

@@ -34,7 +34,7 @@ class MtkController extends Controller
                         ->with('success','Matakuliah created successfully.');
     }
  
-    public function show(Post $post)
+    public function show(PoST $post)
     {
         return view('matakuliahs.show',compact('post'));
     }

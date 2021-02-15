@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTabelAbsensis extends Migration
+class CreateJadwalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateTabelAbsensis extends Migration
      */
     public function up()
     {
-        Schema::create('absensis', function (Blueprint $table) {
+        Schema::create('jadwals', function (Blueprint $table) {
             $table->increments('id');
-            $table->time('waktu_absen');
-            $table->string('mahasiswa_id');
+            $table->string('jadwal');
             $table->string('matakuliah_id');
-            $table->string('keterangan');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateTabelAbsensis extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('absensi');
+        Schema::dropIfExists('jadwals');
     }
 }

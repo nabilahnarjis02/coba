@@ -3,73 +3,71 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
-use App\Models\Mahasiswa;
+use App\Models\jadwal;
  
-class MhsController extends Controller
+class JdwController extends Controller
 {
     public function index()
     {
-        $mahasiswas = Mahasiswa::latest()->paginate(5);
+        $jadwals = jadwal::latest()->paginate(5);
  
-        return view('mahasiswas.index',compact('mahasiswas'))
+        return view('jadwals.index',compact('jadwals'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
  
     public function create()
     {
-        return view('mahasiswas.create');
+        return view('jadwals.create');
     }
  
     public function store(Request $request)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
-
+            'id' => 'required|numeric|uniqe',
+            'jadwal' => 'required',
+            'matakuliah_id' => 'required',
         ]);
  
-        Mahasiswa::create($request->all());
+        jadwal::create($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa created successfully.');
+        return redirect()->route('jadwals.index')
+                        ->with('success','jadwal created successfully.');
     }
  
     public function show(int $id)
     {
         
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.show',['mahasiswa' => $mahasiswa]);
+        $jadwal = jadwal::findOrFail($id); 
+        return view('jadwals.show',['jadwal' => $jadwal]);
     }
  
     public function edit(int $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.edit',['mahasiswa' => $mahasiswa]);
+        $jadwal = jadwal::findOrFail($id); 
+        return view('jadwals.edit',['jadwal' => $jadwal]);
     }
  
-    public function update(Request $request, Mahasiswa $post)
+    public function update(Request $request, jadwal $post)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
+            'id' => 'required|numeric|uniqe',
+            'jadwal' => 'required',
+            'matakuliah_id' => 'required',
         ]);
  
         $post->update($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa updated successfully');
+        return redirect()->route('jadwals.index')
+                        ->with('success','jadwal updated successfully');
     }
  
     public function destroy($id)
     {
-        $mahasiswa = mahasiswa :: where ('id',$id)->first();
-        if($mahasiswa){
-            return $mahasiswa -> delete();
-                with('success','Mahasiswa deleted successfully');
-        }
+        $jadwal = jadwal :: where ('id',$id)->first();
+     
+         $jadwal -> delete(); return redirect()->route('jadwals.index');
+
+                with('success','jadwal deleted successfully');
+        
     }
 }

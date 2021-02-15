@@ -3,73 +3,67 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
-use App\Models\Mahasiswa;
+use App\Models\semester;
  
-class MhsController extends Controller
+class SmtController extends Controller
 {
     public function index()
     {
-        $mahasiswas = Mahasiswa::latest()->paginate(5);
+        $semesters = semester::latest()->paginate(5);
  
-        return view('mahasiswas.index',compact('mahasiswas'))
+        return view('semesters.index',compact('semesters'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
  
     public function create()
     {
-        return view('mahasiswas.create');
+        return view('semesters.create');
     }
  
     public function store(Request $request)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
-
+            'semester' => 'required',
         ]);
  
-        Mahasiswa::create($request->all());
+        semester::create($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa created successfully.');
+        return redirect()->route('semesters.index')
+                        ->with('success','semester created successfully.');
     }
  
     public function show(int $id)
     {
         
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.show',['mahasiswa' => $mahasiswa]);
+        $semester = semester::findOrFail($id); 
+        return view('semesters.show',['semester' => $semester]);
     }
  
     public function edit(int $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswas.edit',['mahasiswa' => $mahasiswa]);
+        $semester = semester::findOrFail($id); 
+        return view('semesters.edit',['semester' => $semester]);
     }
  
-    public function update(Request $request, Mahasiswa $post)
+    public function update(Request $request, semester $post)
     {
         $request->validate([
-            'nama_mahasiswa' => 'required',
-            'alamat' => 'required',
-            'no_tlp' => 'required|numeric',
-            'email' => 'required',
+            'semester' => 'required',
         ]);
  
         $post->update($request->all());
  
-        return redirect()->route('mahasiswas.index')
-                        ->with('success','Mahasiswa updated successfully');
+        return redirect()->route('semesters.index')
+                        ->with('success','semester updated successfully');
     }
  
     public function destroy($id)
     {
-        $mahasiswa = mahasiswa :: where ('id',$id)->first();
-        if($mahasiswa){
-            return $mahasiswa -> delete();
-                with('success','Mahasiswa deleted successfully');
-        }
+        $semester = semester :: where ('id',$id)->first();
+     
+         $semester -> delete(); return redirect()->route('semesters.index');
+
+                with('success','Semester deleted successfully');
+        
     }
 }
